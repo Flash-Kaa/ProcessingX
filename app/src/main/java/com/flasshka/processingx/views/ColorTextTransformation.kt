@@ -8,7 +8,6 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
-import java.lang.StringBuilder
 
 class ColorTextTransformation : VisualTransformation {
     private val keywords = listOf(
@@ -30,7 +29,8 @@ class ColorTextTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         return TransformedText(
             buildAnnotatedStringWithColors(text.text),
-            OffsetMapping.Identity)
+            OffsetMapping.Identity
+        )
     }
 
     private fun buildAnnotatedStringWithColors(text: String): AnnotatedString {
@@ -48,27 +48,27 @@ class ColorTextTransformation : VisualTransformation {
                     val word = sb.toString()
                     sb.clear()
 
-                    val color = if(wordWithoutCur in keywords) {
-                        Color(215, 107, 0)
-                    } else if(wordWithoutCur.toIntOrNull() != null) {
-                        Color(70, 200, 160  )
-                    } else {
-                        Color(200, 200, 200)
+                    val color = if (wordWithoutCur in keywords) {
+                        Color(215, 107, 0) // orange
+                    } else if (wordWithoutCur.toIntOrNull() != null) {
+                        Color(70, 200, 160)
+                    } else { // light blue
+                        Color(200, 200, 200) // white
                     }
 
                     withStyle(SpanStyle(color)) {
                         append(word)
                     }
-                } else if(cur in listOf('\'', '\"') && !hasTwoBracket && !hasOneBracket) {
+                } else if (cur in listOf('\'', '\"') && !hasTwoBracket && !hasOneBracket) {
 
                     val word = sb.toString()
                     sb.clear()
                     sb.append(cur)
 
-                    val color = if(word in keywords) {
-                        Color(215, 107, 0)
+                    val color = if (word in keywords) {
+                        Color(215, 107, 0) // orange
                     } else {
-                        Color(200, 200, 200)
+                        Color(200, 200, 200) // white
                     }
 
                     withStyle(SpanStyle(color)) {
@@ -76,11 +76,11 @@ class ColorTextTransformation : VisualTransformation {
                     }
 
 
-                    when(cur) {
+                    when (cur) {
                         '\'' -> hasOneBracket = true
                         '\"' -> hasTwoBracket = true
                     }
-                } else if(cur == '\'' && hasOneBracket || cur == '\"' && hasTwoBracket) {
+                } else if (cur == '\'' && hasOneBracket || cur == '\"' && hasTwoBracket) {
                     hasOneBracket = false
                     hasTwoBracket = false
 
@@ -88,7 +88,7 @@ class ColorTextTransformation : VisualTransformation {
                     val word = sb.toString()
                     sb.clear()
 
-                    val color = Color(43, 154, 60)
+                    val color = Color(43, 154, 60) // green
 
                     withStyle(SpanStyle(color)) {
                         append(word)
